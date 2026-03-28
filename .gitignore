@@ -27,7 +27,7 @@ temp/
 data/temp/
 
 # Training/inference outputs
-#output/
+output/
 tools/results/
 
 # Large datasets and model weights
