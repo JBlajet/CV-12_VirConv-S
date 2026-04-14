@@ -209,7 +209,7 @@ MODEL:
 
     ROI_HEAD:
         NAME: TEDMHead
-        CLASS_AGNOSTIC: True
+        CLASS_AGNOSTIC: True    # <--- MUST BE TRUE
         ROT_NUM: 3
 
         PART:
@@ -340,7 +340,7 @@ MODEL:
         IoU: 0.9
         RL: True
         NMS_CONFIG:
-            MULTI_CLASSES_NMS: True
+            MULTI_CLASSES_NMS: False  # <--- MUST BE FALSE
             NMS_TYPE: nms_gpu
             NMS_THRESH: 0.1
             NMS_PRE_MAXSIZE: 4096
