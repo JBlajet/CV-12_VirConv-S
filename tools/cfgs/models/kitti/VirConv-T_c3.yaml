@@ -283,40 +283,40 @@ MODEL:
                 FG_RATIO: 0.5
                 SAMPLE_ROI_BY_EACH_CLASS: True
                 CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
+                CLS_FG_THRESH: [0.75, 0.75, 0.75]
+                CLS_BG_THRESH: [0.25, 0.25, 0.25]
                 CLS_BG_THRESH_LO: 0.1
                 HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.5]
+                REG_FG_THRESH: [0.5, 0.5, 0.5]
                 ENABLE_HARD_SAMPLING: False
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
+                HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+                HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
             STAGE1:
                 ROI_PER_IMAGE: 160
                 FG_RATIO: 0.5
                 SAMPLE_ROI_BY_EACH_CLASS: True
                 CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
+                CLS_FG_THRESH: [0.75, 0.75, 0.75]
+                CLS_BG_THRESH: [0.25, 0.25, 0.25]
                 CLS_BG_THRESH_LO: 0.1
                 HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.55]
+                REG_FG_THRESH: [0.55, 0.55, 0.55]
                 ENABLE_HARD_SAMPLING: True
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
+                HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+                HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
             STAGE2:
                 ROI_PER_IMAGE: 160
                 FG_RATIO: 0.5
                 SAMPLE_ROI_BY_EACH_CLASS: True
                 CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
+                CLS_FG_THRESH: [0.75, 0.75, 0.75]
+                CLS_BG_THRESH: [0.25, 0.25, 0.25]
                 CLS_BG_THRESH_LO: 0.1
                 HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.6]
+                REG_FG_THRESH: [0.6, 0.6, 0.6]
                 ENABLE_HARD_SAMPLING: True
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
+                HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+                HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
 
 
         LOSS_CONFIG:
@@ -352,7 +352,7 @@ OPTIMIZATION:
     NUM_EPOCHS: 60
 
     OPTIMIZER: adam_onecycle
-    LR: 0.01
+    LR: 0.003
     WEIGHT_DECAY: 0.01
     MOMENTUM: 0.9
 
