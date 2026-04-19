@@ -42,11 +42,11 @@ DATA_CONFIG:
               DB_INFO_PATH:
                 - kitti_dbinfos_trainsemi.pkl
               PREPARE: {
-                filter_by_min_points: ['Car:5'],
+                filter_by_min_points: ['Car:5', 'Pedestrian:5', 'Cyclist:5'],
                 filter_by_difficulty: [-1],
               }
 
-              SAMPLE_GROUPS: ['Car:10']
+              SAMPLE_GROUPS: ['Car:10', 'Pedestrian:10', 'Cyclist:10']
 
               MIN_SAMPLING_DIS: 0
               MAX_SAMPLING_DIS: 20
@@ -75,6 +75,9 @@ DATA_CONFIG:
 
             - NAME: random_world_scaling
               WORLD_SCALE_RANGE: [0.95, 1.05]
+
+            - NAME: random_local_trans
+              TRANSLATION_STD: [1.0, 1.0, 0.2]
 
             - NAME: random_local_pyramid_aug
               DROP_PROB: 0.25
@@ -274,46 +277,46 @@ MODEL:
 
 
         TARGET_CONFIG:
-            BOX_CODER: ResidualCoder
-            STAGE0:
-                ROI_PER_IMAGE: 160
-                FG_RATIO: 0.5
-                SAMPLE_ROI_BY_EACH_CLASS: True
-                CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
-                CLS_BG_THRESH_LO: 0.1
-                HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.5]
-                ENABLE_HARD_SAMPLING: False
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
-            STAGE1:
-                ROI_PER_IMAGE: 160
-                FG_RATIO: 0.5
-                SAMPLE_ROI_BY_EACH_CLASS: True
-                CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
-                CLS_BG_THRESH_LO: 0.1
-                HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.55]
-                ENABLE_HARD_SAMPLING: True
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
-            STAGE2:
-                ROI_PER_IMAGE: 160
-                FG_RATIO: 0.5
-                SAMPLE_ROI_BY_EACH_CLASS: True
-                CLS_SCORE_TYPE: roi_iou_x
-                CLS_FG_THRESH: [0.75]
-                CLS_BG_THRESH: [0.25]
-                CLS_BG_THRESH_LO: 0.1
-                HARD_BG_RATIO: 0.8
-                REG_FG_THRESH: [0.6]
-                ENABLE_HARD_SAMPLING: True
-                HARD_SAMPLING_THRESH: [0.5]
-                HARD_SAMPLING_RATIO: [0.5]
+          BOX_CODER: ResidualCoder
+          STAGE0:
+            ROI_PER_IMAGE: 160
+            FG_RATIO: 0.5
+            SAMPLE_ROI_BY_EACH_CLASS: True
+            CLS_SCORE_TYPE: roi_iou_x
+            CLS_FG_THRESH: [0.75, 0.75, 0.75]
+            CLS_BG_THRESH: [0.25, 0.25, 0.25]
+            CLS_BG_THRESH_LO: 0.1
+            HARD_BG_RATIO: 0.8
+            REG_FG_THRESH: [0.5, 0.5, 0.5]
+            ENABLE_HARD_SAMPLING: False
+            HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+            HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
+          STAGE1:
+            ROI_PER_IMAGE: 160
+            FG_RATIO: 0.5
+            SAMPLE_ROI_BY_EACH_CLASS: True
+            CLS_SCORE_TYPE: roi_iou_x
+            CLS_FG_THRESH: [0.75, 0.75, 0.75]
+            CLS_BG_THRESH: [0.25, 0.25, 0.25]
+            CLS_BG_THRESH_LO: 0.1
+            HARD_BG_RATIO: 0.8
+            REG_FG_THRESH: [0.55, 0.55, 0.55]
+            ENABLE_HARD_SAMPLING: True
+            HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+            HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
+          STAGE2:
+            ROI_PER_IMAGE: 160
+            FG_RATIO: 0.5
+            SAMPLE_ROI_BY_EACH_CLASS: True
+            CLS_SCORE_TYPE: roi_iou_x
+            CLS_FG_THRESH: [0.75, 0.75, 0.75]
+            CLS_BG_THRESH: [0.25, 0.25, 0.25]
+            CLS_BG_THRESH_LO: 0.1
+            HARD_BG_RATIO: 0.8
+            REG_FG_THRESH: [0.6, 0.6, 0.6]
+            ENABLE_HARD_SAMPLING: True
+            HARD_SAMPLING_THRESH: [0.5, 0.5, 0.5]
+            HARD_SAMPLING_RATIO: [0.5, 0.5, 0.5]
 
 
         LOSS_CONFIG:
@@ -334,7 +337,8 @@ MODEL:
         SCORE_THRESH: 0.4
         OUTPUT_RAW_SCORE: False
         EVAL_METRIC: kitti
-
+        IoU: 0.9
+        RL: True
         NMS_CONFIG:
             MULTI_CLASSES_NMS: False
             NMS_TYPE: nms_gpu
@@ -345,10 +349,10 @@ MODEL:
 
 OPTIMIZATION:
     BATCH_SIZE_PER_GPU: 2
-    NUM_EPOCHS: 5
+    NUM_EPOCHS: 10
 
     OPTIMIZER: adam_onecycle
-    LR: 0.01
+    LR: 0.003
     WEIGHT_DECAY: 0.01
     MOMENTUM: 0.9
 
