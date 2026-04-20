@@ -175,7 +175,7 @@ def ensure_semi_info_file(repo_root: Path, data_root: Path, split_name: str, inf
 
 
 def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_name: str):
-    cfg_file = args.cfg_file.replace('\\', '/')
+    cfg_file = str((repo_root / args.cfg_file).resolve())
     epoch = _extract_epoch(ckpt_path)
     eval_tag = f'pseudo_ckpt_{epoch}'
 
