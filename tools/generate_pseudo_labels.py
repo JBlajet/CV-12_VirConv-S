@@ -189,6 +189,7 @@ def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_nam
         '--workers', str(args.workers),
         '--extra_tag', args.extra_tag,
         '--eval_tag', eval_tag,
+        '--save_to_file',
         '--set',
         'DATA_CONFIG.DATA_SPLIT.test', args.teacher_split,
         'DATA_CONFIG.INFO_PATH.test', f"['{semi_info_name}']"
