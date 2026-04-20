@@ -207,7 +207,7 @@ def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_nam
         subprocess.run(cmd, cwd=str(repo_root / 'tools'), check=True)
 
     cfg_stem = Path(args.cfg_file).stem
-    cfg_parts = args.cfg_file.replace('\\', '/').split('/')[1:-1]
+    cfg_parts = cfg_file.replace('\\', '/').split('/')[1:-1]
     exp_group = '/'.join(cfg_parts)
     result_dir = repo_root / 'output' / exp_group / cfg_stem / args.extra_tag / 'eval' / f'epoch_{epoch}' / args.teacher_split / eval_tag
 
@@ -216,6 +216,17 @@ def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_nam
         raise FileNotFoundError(f'No result pkl found in {result_dir}')
 
     return result_candidates[-1]
+
+
+def find_existing_result_pkl(repo_root: Path, args, epoch: int):
+    cfg_file = str((repo_root / args.cfg_file).relative_to(repo_root / 'tools'))
+    cfg_stem = Path(args.cfg_file).stem
+    cfg_parts = cfg_file.replace('\\', '/').split('/')[1:-1]
+    exp_group = '/'.join(cfg_parts)
+    result_dir = repo_root / 'output' / exp_group / cfg_stem / args.extra_tag / 'eval' / f'epoch_{epoch}' / args.teacher_split / f'pseudo_ckpt_{epoch}'
+
+    result_candidates = sorted(result_dir.glob('result*.pkl'), key=os.path.getmtime)
+    return result_candidates[-1] if result_candidates else None
 
 
 def load_annos(result_pkl: Path):
@@ -329,6 +340,13 @@ def main():
 
     result_pkls = []
     for _, ckpt in selected:
+        epoch = _extract_epoch(ckpt)
+        existing_result = find_existing_result_pkl(repo_root=repo_root, args=args, epoch=epoch)
+        if existing_result is not None:
+            print(f'Skipping epoch={epoch}, found existing result: {existing_result}')
+            result_pkls.append(existing_result)
+            continue
+
         result_pkl = run_inference_for_ckpt(
             repo_root=repo_root,
             args=args,
