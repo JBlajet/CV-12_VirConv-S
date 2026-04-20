@@ -179,10 +179,16 @@ def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_nam
     cfg_file = str((repo_root / args.cfg_file).relative_to(repo_root / 'tools'))
     epoch = _extract_epoch(ckpt_path)
     eval_tag = f'pseudo_ckpt_{epoch}'
+    nproc_per_node = len(os.environ.get('CUDA_VISIBLE_DEVICES', '').split(','))
+    if nproc_per_node <= 0 or os.environ.get('CUDA_VISIBLE_DEVICES', '').strip() == '':
+        nproc_per_node = 1
 
     cmd = [
         sys.executable,
+        '-m', 'torch.distributed.launch',
+        '--nproc_per_node', str(nproc_per_node),
         'test.py',
+        '--launcher', 'pytorch',
         '--cfg_file', cfg_file,
         '--ckpt', str(ckpt_path),
         '--batch_size', str(args.batch_size),
