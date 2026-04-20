@@ -175,13 +175,14 @@ def ensure_semi_info_file(repo_root: Path, data_root: Path, split_name: str, inf
 
 
 def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_name: str):
-    cfg_file = str((repo_root / args.cfg_file).resolve())
+    # Make cfg_file relative to tools directory so base config paths resolve correctly
+    cfg_file = str((repo_root / args.cfg_file).relative_to(repo_root / 'tools'))
     epoch = _extract_epoch(ckpt_path)
     eval_tag = f'pseudo_ckpt_{epoch}'
 
     cmd = [
         sys.executable,
-        'tools/test.py',
+        'test.py',
         '--cfg_file', cfg_file,
         '--ckpt', str(ckpt_path),
         '--batch_size', str(args.batch_size),
@@ -195,7 +196,7 @@ def run_inference_for_ckpt(repo_root: Path, args, ckpt_path: Path, semi_info_nam
 
     print('Running:', ' '.join(cmd))
     if not args.dry_run:
-        subprocess.run(cmd, cwd=str(repo_root), check=True)
+        subprocess.run(cmd, cwd=str(repo_root / 'tools'), check=True)
 
     cfg_stem = Path(args.cfg_file).stem
     cfg_parts = args.cfg_file.replace('\\', '/').split('/')[1:-1]
