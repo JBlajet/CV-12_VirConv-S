@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+
+# Build/install artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs/temp
+*.log
+tmp/
+temp/
+data/temp/
+
+# Training/inference outputs
+output/
+tools/results/
+visualize/
+
+# Large datasets and model weights
+data/
+checkpoints/
+*.pth
+*.pt
+*.ckpt
+*.tar
+
+# Notebook/checkpoint junk
+.ipynb_checkpoints/
