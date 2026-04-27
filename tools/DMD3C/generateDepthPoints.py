@@ -14,6 +14,12 @@ THIS_DIR = Path(__file__).resolve().parent
 REPO_ROOT = THIS_DIR.parent.parent
 PENET_DIR = THIS_DIR.parent / "PENet"
 
+# Add DMD3C extensions build directory to path
+EXTS_BUILD_DIR = THIS_DIR / "exts" / "build"
+for lib_dir in EXTS_BUILD_DIR.glob("lib.*"):
+    if lib_dir.is_dir():
+        sys.path.insert(0, str(lib_dir))
+
 if str(PENET_DIR) not in sys.path:
     sys.path.insert(0, str(PENET_DIR))
 if str(THIS_DIR) not in sys.path:
