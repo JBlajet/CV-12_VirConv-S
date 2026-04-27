@@ -609,8 +609,12 @@ class PMP(nn.Module):
         Kp = K.clone()
         Kp[:, :2] = Kp[:, :2] / 2 ** self.level
         B, _, height, width = Sp.shape
-        xx, yy = torch.meshgrid(torch.arange(width, device=Sp.device), torch.arange(height, device=Sp.device),
-                                indexing='xy')
+        try:
+            xx, yy = torch.meshgrid(torch.arange(width, device=Sp.device), torch.arange(height, device=Sp.device),
+                                    indexing='xy')
+        except TypeError:
+            # PyTorch < 1.10 compatibility: old API doesn't have indexing parameter
+            yy, xx = torch.meshgrid(torch.arange(height, device=Sp.device), torch.arange(width, device=Sp.device))
         ###############################################################
         # Pre
         Pxyz = self.pinv(Sp, Kp, xx, yy)
