@@ -40,5 +40,6 @@ checkpoints/
 *.tar
 tools/DMD3C/checkpoints/
 
+
 # Notebook/checkpoint junk
 .ipynb_checkpoints/
