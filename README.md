@@ -1,5 +1,5 @@
 # CV-12 VirConv_DMD3C
-Computer vision project attempting to improve the VirConv-S model from the paper: [Virtual Sparse Convolution for Multimodal 3D Object Detection](https://arxiv.org/abs/2303.02314)
+Computer vision project attempting to improve the VirConv model from the paper: [Virtual Sparse Convolution for Multimodal 3D Object Detection](https://arxiv.org/abs/2303.02314)
 
 A fork of: [VirConv](https://github.com/hailanyi/VirConv)
 
